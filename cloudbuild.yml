@@ -5,7 +5,6 @@ steps:
       - "-c"
       - |
         docker pull gcr.io/$PROJECT_ID/my_app:latest || exit 0
-
   # Build the application image
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "bash"
@@ -16,7 +15,6 @@ steps:
         --cache-from gcr.io/$PROJECT_ID/my_app:latest \
         -t gcr.io/$PROJECT_ID/my_app:latest \
         . && docker push gcr.io/$PROJECT_ID/my_app:latest
-
   # Deploy to cloud run
   - name: "gcr.io/cloud-builders/gcloud"
     args: [
@@ -39,10 +37,9 @@ steps:
         "services",
         "update-traffic",
         "$PROJECT_ID", # We are naming the cloudrun service the same as our project id
-        "--to-revision=LATEST=50",
+        "--to-revisions=LATEST=50",
         "--region",
-        "--no-traffic",
-		"australia-southeast1",
+        "australia-southeast1",
         "--platform",
         "managed",
       ]
